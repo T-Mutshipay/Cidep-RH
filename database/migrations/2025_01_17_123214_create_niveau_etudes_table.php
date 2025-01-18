@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('niveau_etudes', function (Blueprint $table) {
             $table->id();
+            $table->string('nom_niveau', 255);
             $table->timestamps();
         });
     }

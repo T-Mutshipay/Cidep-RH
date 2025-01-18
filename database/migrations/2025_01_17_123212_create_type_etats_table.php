@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('type_etats', function (Blueprint $table) {
             $table->id();
+            $table->string('nom_etat', 255);
+            $table->string('code_etat', 50);
+            $table->text('detail_etat')->nullable();
             $table->timestamps();
         });
     }

@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('domaines', function (Blueprint $table) {
             $table->id();
+            $table->string('nom_domaine', 255);
+            $table->string('code_domaine', 50);
+            $table->text('detail_domaine')->nullable();
             $table->timestamps();
         });
     }

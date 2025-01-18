@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('type_grades', function (Blueprint $table) {
             $table->id();
+            $table->string('nom_type_grade', 255);
+            $table->string('code_type_grade', 100);
             $table->timestamps();
         });
     }
