@@ -5,18 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class FonctionObtenue extends Model
+class Mutation extends Model
 {
     use HasFactory;
     protected $fillable = [
         'agent_id',
-        'fonction_id',
-        'date_obtention',
+        'direction_id',
+        'date_mutation',
     ];
     public function agent() {
         return $this->belongsTo(Agent::class);
     }
-    public function fonction() {
-        return $this->belongsTo(Fonction::class);
+    public function direction() {
+        return $this->belongsTo(Direction::class);
     }
 }

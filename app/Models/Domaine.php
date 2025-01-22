@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Domaine extends Model
 {
-    protected $table = [
+    use HasFactory;
+    protected $fillable = [
         'nom_domaine',
         'code_domaine',
         'detail_domaine'
