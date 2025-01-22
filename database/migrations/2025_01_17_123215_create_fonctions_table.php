@@ -13,9 +13,12 @@ return new class extends Migration
     {
         Schema::create('fonctions', function (Blueprint $table) {
             $table->id();
+            $table->string('Nom_fonction');
+            $table->string('Code_fonction');
+            $table->text('Detail_fonction');
             $table->timestamps();
-        });
-    }
+    });
+}
 
     /**
      * Reverse the migrations.

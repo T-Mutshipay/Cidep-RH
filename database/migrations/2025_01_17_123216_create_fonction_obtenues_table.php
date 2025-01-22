@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('fonction_obtenues', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('fonction_id')->constrained();
+            $table->foreignId('agent_id')->constrained();
+            $table->date('date_obtention');
             $table->timestamps();
         });
     }

@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('obtention_grades', function (Blueprint $table) {
+        Schema::create('mutations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('agent_id')->constrained();
-            $table->foreignId('grade_id')->constrained();
-            $table->date('date_obtention');
+            $table->foreignId('direction_id')->constrained();
+            $table->date('date_mutation');
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('obtention_grades');
+        Schema::dropIfExists('mutations');
     }
 };
