@@ -2,63 +2,56 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Fonction;
 use Illuminate\Http\Request;
 
 class FonctionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $fonctions = Fonction::all();
+        return view('fonctions.index', compact('fonctions'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('fonctions.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'nom_fonction' => 'required|string|max:255',
+            'code_fonction' => 'required|string|max:50',
+            'detail_fonction' => 'nullable|string',
+        ]);
+
+        Fonction::create($validated);
+
+        return redirect()->route('fonctions.index')->with('success', 'Fonction créée avec succès.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit(Fonction $fonction)
     {
-        //
+        return view('fonctions.edit', compact('fonction'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(Request $request, Fonction $fonction)
     {
-        //
+        $validated = $request->validate([
+            'nom_fonction' => 'required|string|max:255',
+            'code_fonction' => 'required|string|max:50',
+            'detail_fonction' => 'nullable|string',
+        ]);
+
+        $fonction->update($validated);
+
+        return redirect()->route('fonctions.index')->with('success', 'Fonction mise à jour avec succès.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroy(Fonction $fonction)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $fonction->delete();
+        return redirect()->route('fonctions.index')->with('success', 'Fonction supprimée avec succès.');
     }
 }

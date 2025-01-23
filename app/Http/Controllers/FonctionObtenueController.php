@@ -2,63 +2,62 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FonctionObtenue;
+use App\Models\Agent;
+use App\Models\Fonction;
 use Illuminate\Http\Request;
 
 class FonctionObtenueController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $fonctionsObtenues = FonctionObtenue::with(['agent', 'fonction'])->get();
+        return view('fonctions-obtenues.index', compact('fonctionsObtenues'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $agents = Agent::all();
+        $fonctions = Fonction::all();
+        return view('fonctions-obtenues.create', compact('agents', 'fonctions'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'agent_id' => 'required|exists:agents,id',
+            'fonction_id' => 'required|exists:fonctions,id',
+            'date_obtention' => 'required|date',
+        ]);
+
+        FonctionObtenue::create($validated);
+
+        return redirect()->route('fonctions-obtenues.index')->with('success', 'Fonction obtenue créée avec succès.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit(FonctionObtenue $fonctionObtenue)
     {
-        //
+        $agents = Agent::all();
+        $fonctions = Fonction::all();
+        return view('fonctions-obtenues.edit', compact('fonctionObtenue', 'agents', 'fonctions'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(Request $request, FonctionObtenue $fonctionObtenue)
     {
-        //
+        $validated = $request->validate([
+            'agent_id' => 'required|exists:agents,id',
+            'fonction_id' => 'required|exists:fonctions,id',
+            'date_obtention' => 'required|date',
+        ]);
+
+        $fonctionObtenue->update($validated);
+
+        return redirect()->route('fonctions-obtenues.index')->with('success', 'Fonction obtenue mise à jour avec succès.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroy(FonctionObtenue $fonctionObtenue)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $fonctionObtenue->delete();
+        return redirect()->route('fonctions-obtenues.index')->with('success', 'Fonction obtenue supprimée avec succès.');
     }
 }

@@ -1,64 +1,67 @@
 <?php
-
 namespace App\Http\Controllers;
 
+use App\Models\Affectation;
+use App\Models\Agent;
+use App\Models\Service;
 use Illuminate\Http\Request;
 
 class AffectationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $affectations = Affectation::with(['agent', 'service'])->get();
+        return view('affectations.index', compact('affectations'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $agents = Agent::all();
+        $services = Service::all();
+        return view('affectations.create', compact('agents', 'services'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'agent_id' => 'required|exists:agents,id',
+            'service_id' => 'required|exists:services,id',
+            'date_affectation' => 'required|date',
+        ]);
+
+        Affectation::create($validated);
+
+        return redirect()->route('affectations.index')->with('success', 'Affectation créée avec succès.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Affectation $affectation)
     {
-        //
+        return view('affectations.show', compact('affectation'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit(Affectation $affectation)
     {
-        //
+        $agents = Agent::all();
+        $services = Service::all();
+        return view('affectations.edit', compact('affectation', 'agents', 'services'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Affectation $affectation)
     {
-        //
+        $validated = $request->validate([
+            'agent_id' => 'required|exists:agents,id',
+            'service_id' => 'required|exists:services,id',
+            'date_affectation' => 'required|date',
+        ]);
+
+        $affectation->update($validated);
+
+        return redirect()->route('affectations.index')->with('success', 'Affectation mise à jour avec succès.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Affectation $affectation)
     {
-        //
+        $affectation->delete();
+        return redirect()->route('affectations.index')->with('success', 'Affectation supprimée avec succès.');
     }
 }
