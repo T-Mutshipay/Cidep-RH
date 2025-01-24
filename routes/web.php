@@ -6,7 +6,9 @@ use App\Http\Controllers\DirectionController;
 use App\Http\Controllers\DomaineController;
 use App\Http\Controllers\FonctionController;
 use App\Http\Controllers\FonctionObtenueController;
+use App\Http\Controllers\MutationController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -24,6 +26,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('affectations', AffectationController::class);
+    Route::resource('services', ServiceController::class);
+    Route::resource('mutations',MutationController::class);
     Route::resource('directions', DirectionController::class);
     Route::resource('domaines', DomaineController::class);
     Route::resource('fonctions', FonctionController::class);

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Agent;
+use App\Models\Direction;
+use App\Models\Mutation;
 use Illuminate\Http\Request;
 
 class MutationController extends Controller
@@ -11,7 +14,10 @@ class MutationController extends Controller
      */
     public function index()
     {
-        //
+        $mutations = Mutation::with(['agent', 'direction'])->get();
+        $agents = Agent::all();
+        $directions = Direction::all();
+        return view('mutations.index', compact('mutations', 'agents', 'directions'));
     }
 
     /**
@@ -27,7 +33,15 @@ class MutationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'agent_id' => 'required|integer|exists:agents,id',
+            'direction_id' => 'required|integer|exists:directions,id',
+            'date_mutation' => 'required|date',
+        ]);
+
+        Mutation::create($request->all());
+
+        return redirect()->route('mutations.index')->with('success', 'Mutation créée avec succès!');
     }
 
     /**
