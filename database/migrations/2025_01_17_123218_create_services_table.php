@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nom_service');
             $table->string('code_service');
+            $table->string('detail_service');
             $table->timestamps();
         });
     }
