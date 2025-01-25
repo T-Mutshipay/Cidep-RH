@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class TypeEtat extends Model
 {
     use HasFactory;
-    protected $table = [
+    protected $fillable = [
         'nom_etat',
         'code_etat',
         'detail_etat'

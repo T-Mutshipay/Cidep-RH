@@ -9,7 +9,7 @@ class NiveauEtude extends Model
 {
     use HasFactory;
     
-    protected $table = [
+    protected $fillable = [
         'nom_niveau_etude',
         'code_niveau_etude',
         'detail_niveau_etude'
