@@ -19,27 +19,28 @@
             </style>
         @endif
     </head>
-    <body class="font-sans antialiased dark:bg-black dark:text-white/50">
-        <div class="bg-gray-50 text-black/50 dark:bg-black dark:text-white/50 min-h-screen flex flex-col lg:flex-row">
+    <body class="font-sans antialiased dark:bg-gray-900 dark:text-gray-300">
+        <div class="bg-gray-50 dark:bg-gray-900 min-h-screen flex flex-col lg:flex-row">
+            <!-- Left Section (Image) -->
             <div class="lg:w-1/2 flex items-center justify-center p-6 bg-white dark:bg-gray-800">
-                <img id="background" class="max-w-[877px]" src="{{ asset('img/ECIDEP.jpg') }}" alt="ecidep image"/>
+                <img id="background" class="max-w-full rounded-lg shadow-lg" src="{{ asset('img/ECIDEP.jpg') }}" alt="ECIDEP image" />
             </div>
+    
+            <!-- Right Section (Content) -->
             <div class="lg:w-1/2 flex flex-col items-center justify-center p-6 bg-gray-100 dark:bg-gray-900">
-                <div class="relative w-full max-w-2xl px-6 lg:max-w-7xl">
-                    <header class="grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3">
-                        <div class="flex lg:justify-center lg:col-start-2 space-x-2">
-                            <a
-                                href="{{ route('login') }}"
-                                class="rounded-md px-3 py-2 text-black bg-white ring-1 ring-transparent transition hover:bg-gray-200 hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:bg-gray-700 dark:hover:bg-gray-600 dark:hover:text-white/80 dark:focus-visible:ring-white"
-                            >
-                                Log in
+                <div class="relative w-full max-w-2xl px-6">
+                    <!-- Header -->
+                    <header class="grid grid-cols-1 lg:grid-cols-3 items-center gap-4 py-10">
+                        <div class="flex justify-center lg:col-start-2 space-x-4">
+                            <!-- Login Button -->
+                            <a href="{{ route('login') }}" class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-6 py-3 transition duration-200 transform hover:-translate-y-1 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                Se connecter
                             </a>
+            
+                            <!-- Register Button -->
                             @if (Route::has('register'))
-                                <a
-                                    href="{{ route('register') }}"
-                                    class="rounded-md px-3 py-2 text-black bg-white ring-1 ring-transparent transition hover:bg-gray-200 hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:bg-gray-700 dark:hover:bg-gray-600 dark:hover:text-white/80 dark:focus-visible:ring-white"
-                                >
-                                    Register
+                                <a href="{{ route('register') }}" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-base px-6 py-3 transition duration-200 transform hover:-translate-y-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                                    S'inscrire
                                 </a>
                             @endif
                         </div>
@@ -48,4 +49,5 @@
             </div>
         </div>
     </body>
+    
 </html>
