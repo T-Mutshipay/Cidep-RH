@@ -10,4 +10,8 @@ class Direction extends Model
         'nom_direction',
         'code_direction',
     ];
+    public function mutation(){
+        return $this->hasMany(Mutation::class);
+    }
 }
+
