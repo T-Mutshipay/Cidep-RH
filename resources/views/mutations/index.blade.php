@@ -1,4 +1,12 @@
 <x-app-layout>
+    <div class="flex justify-end m-4">
+        <a href="{{ route('agents.index') }}" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition-all flex items-center">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+            Retour en arrière
+        </a>
+    </div>
     <div class="m-10">
         <h1 class="text-xl font-bold">Gestion des Mutations</h1>
     
