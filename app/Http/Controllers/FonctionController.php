@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Fonction;
+use App\Models\FonctionObtenue;
 use Illuminate\Http\Request;
 
 class FonctionController extends Controller
@@ -26,8 +27,12 @@ class FonctionController extends Controller
             'detail_fonction' => 'nullable|string',
         ]);
 
-        Fonction::create($validated);
-
+        $fonction = Fonction::create($validated);
+        FonctionObtenue::create([
+            'agent_id' => $request->agent_id,
+            'fonction_id' => $fonction->id,
+            'date_obtention' => now(),
+        ]);
         return redirect()->route('fonctions.index')->with('success', 'Fonction créée avec succès.');
     }
 
