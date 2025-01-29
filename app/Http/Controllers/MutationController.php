@@ -6,6 +6,8 @@ use App\Models\Agent;
 use App\Models\Direction;
 use App\Models\Mutation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\MutationNotification;
 
 class MutationController extends Controller
 {
@@ -30,18 +32,40 @@ class MutationController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     */
+     */    
     public function store(Request $request)
     {
         $request->validate([
             'agent_id' => 'required|integer|exists:agents,id',
             'direction_id' => 'required|integer|exists:directions,id',
-            'date_mutation' => 'required|date',
+            'date_mutation' => 'required|date|after_or_equal:today',
         ]);
 
-        Mutation::create($request->all());
+        $agent = Agent::find($request->agent_id);
+        
+        if ($agent->direction_id == $request->direction_id) {
+            return redirect()->route('agents.show', $agent->id)->with('error', "L'agent est déjà dans cette direction.");
+        }
 
-        return redirect()->route('mutations.index')->with('success', 'Mutation créée avec succès!');
+        $existingMutation = Mutation::where('agent_id', $request->agent_id)
+                        ->where('direction_id', $request->direction_id)
+                        ->first();
+        
+        if ($existingMutation) {
+            return redirect()->route('agents.show', $agent->id)->with('error', "Une mutation pour cet agent vers cette direction existe déjà.");
+        }
+
+        $mutation = Mutation::create([
+            'agent_id' => $request->agent_id,
+            'direction_id' => $request->direction_id,
+            'date_mutation' => $request->date_mutation,
+        ]);
+
+        $mutation->load('agent', 'direction');
+
+        Mail::to($agent->email)->send(new MutationNotification($mutation));
+
+        return redirect()->route('agents.show', $agent->id)->with('success', 'Mutation créée avec succès et email envoyé!');
     }
 
     /**

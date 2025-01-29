@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class Agent extends Model
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
     protected $fillable = [
         'matricule',
         'nom',
@@ -41,7 +42,7 @@ class Agent extends Model
     {
         return $this->belongsToMany(Fonction::class)->withPivot('date_obtention');
     }
-    public function mutations()
+    public function mutation()
     {
         return $this->hasMany(Mutation::class);
     }

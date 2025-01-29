@@ -4,18 +4,18 @@
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
             </svg>
-            Retour en arrière
+            
         </a>
     </div>
     <div class="m-10">
         <h1 class="text-xl font-bold">Gestion des Mutations</h1>
     
         <!-- Bouton pour afficher le formulaire -->
-        <button id="toggleForm" class="mt-4 mb-4 text-white bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded">
+        {{-- <button id="toggleForm" class="mt-4 mb-4 text-white bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded">
             Ajouter une Mutation
-        </button>
+        </button> --}}
     
-        <!-- Formulaire de création -->
+        {{-- <!-- Formulaire de création -->
         <div id="createForm" class="hidden">
             <h2 class="text-lg font-semibold">Créer une Mutation</h2>
             <form action="{{ route('mutations.store') }}" method="POST">
@@ -42,48 +42,56 @@
                 </div>
                 <button type="submit" class="text-white bg-green-500 hover:bg-green-700 font-bold py-2 px-4 rounded">Créer</button>
             </form>
-        </div>
+        </div> --}}
     </div>
     <div class="m-10">
-        <table id="search-table" class="min-w-full border-collapse border border-gray-200 mt-4">
-            <thead>
-                <tr>
-                    <th class="border border-gray-300 p-2">Agent</th>
-                    <th class="border border-gray-300 p-2">Direction</th>
-                    <th class="border border-gray-300 p-2">Date de Mutation</th>
-                    <th class="border border-gray-300 p-2">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($mutations as $mutation)
-                    <tr class="bg-gray-100 hover:bg-gray-200">
-                        <td class="border border-gray-300 p-2">{{ $mutation->agent->nom }} {{ $mutation->agent->postnom }}</td>
-                        <td class="border border-gray-300 p-2">{{ $mutation->direction->nom_direction }}</td>
-                        <td class="border border-gray-300 p-2">{{ $mutation->date_mutation }}</td>
-                        <td class="border border-gray-300 p-2">
-                            <a href="{{ route('mutations.edit', $mutation->id) }}" class="text-blue-500">Éditer</a>
-                            <form action="{{ route('mutations.destroy', $mutation->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-red-500 ml-2">Supprimer</button>
-                            </form>
-                        </td>
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <div class="flex justify-between items-center mb-4">
+                <div id="searchable-container" class="flex-1 mr-4"></div>
+                <div id="sortable-container" class="flex-1"></div>
+            </div>
+            <table id="search-table" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">Agent</th>
+                        <th scope="col" class="px-6 py-3">Direction</th>
+                        <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">Date de Mutation</th>
+                        <th scope="col" class="px-6 py-3">Actions</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach($mutations as $mutation)
+                        <tr class="border-b border-gray-200 dark:border-gray-700">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
+                                {{ $mutation->agent->nom }} {{ $mutation->agent->postnom }}
+                            </th>
+                            <td class="px-6 py-4">{{ $mutation->direction->nom_direction }}</td>
+                            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">{{ $mutation->date_mutation }}</td>
+                            <td class="px-6 py-4">
+                                <a href="{{ route('mutations.edit', $mutation->id) }}" class="text-blue-500">Éditer</a>
+                                <form action="{{ route('mutations.destroy', $mutation->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-red-500 ml-2">Supprimer</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
     <script>
-        document.getElementById('toggleForm').addEventListener('click', function() {
-            const form = document.getElementById('createForm');
-            form.classList.toggle('hidden');
+        //data table script//
+        const dataTable = new simpleDatatables.DataTable("#search-table", {
+            searchable: true,
+            sortable: true
         });
+        // document.getElementById('toggleForm').addEventListener('click', function() {
+        //     const form = document.getElementById('createForm');
+        //     form.classList.toggle('hidden');
+        // });
 
-        //data table scrip//
-            const dataTable = new simpleDatatables.DataTable("#search-table", {
-                searchable: false,
-                sortable: false
-            });
             
     </script>
 </x-app-layout>
