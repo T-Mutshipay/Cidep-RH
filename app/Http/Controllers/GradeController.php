@@ -36,6 +36,10 @@ class GradeController extends Controller
             'code_grade' => 'required|string|max:50|unique:grades,code_grade',
             'type_grade_id' => 'required|exists:type_grades,id',
         ]);
+        $nom_grade = $request->nom_grade;
+        if(Grade::where('nom_grade', $nom_grade)->exists()){
+            return redirect()->back()->with('error', 'Ce grade existe déjà.');
+        }
         Grade::create([
             'nom_grade' => $request->nom_grade,
             'code_grade' => $request->code_grade,
