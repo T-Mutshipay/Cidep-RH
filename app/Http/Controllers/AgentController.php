@@ -35,47 +35,25 @@ class AgentController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-{
-    // dd($request->all());
-    $request->validate([
-        'matricule' => 'required|string|max:255',
-        'nom' => 'required|string|max:255',
-        'postnom' => 'required|string|max:255',
-        'prenom' => 'required|string|max:255',
-        'date_naissance' => 'required|date',
-        'date_engagement' => 'required|date',
-        'adresse' => 'required|string|max:255',
-        'telephone' => 'required|string|max:20',
-        'email' => 'required|string|email|max:255|unique:agents',
-        'domaine_id' => 'required|integer|exists:domaines,id',
-        'niveau_id' => 'required|integer|exists:niveau_etudes,id', // Correction ici
-        'etat_id' => 'required|integer|exists:type_etats,id', // Correction ici
-    ]);
+    {
+        $request->validate([
+            'matricule' => 'required|string|max:255',
+            'nom' => 'required|string|max:255',
+            'postnom' => 'nullable|string|max:255',
+            'prenom' => 'required|string|max:255',
+            'date_naissance' => 'required|date',
+            'adresse' => 'nullable|string|max:255',
+            'telephone' => 'nullable|string|max:15',
+            'email' => 'nullable|email|max:255',
+            'date_engagement' => 'required|date',
+            'domaine_id' => 'required|exists:domaines,id',
+            'niveau_etude_id' => 'required|exists:niveau_etudes,id',
+            'type_etat_id' => 'required|exists:type_etats,id',
+        ]);
 
-    $agent = new Agent([
-        'matricule' => $request->get('matricule'),
-        'nom' => $request->get('nom'),
-        'postnom' => $request->get('postnom'),
-        'prenom' => $request->get('prenom'),
-        'date_naissance' => $request->get('date_naissance'),
-        'adresse' => $request->get('adresse'),
-        'telephone' => $request->get('telephone'),
-        'email' => $request->get('email'),
-        'date_engagement' => $request->get('date_engagement'),
-        'domaine_id' => $request->get('domaine_id'),
-        'niveau_id' => $request->get('niveau_id'), // Correction ici
-        'etat_id' => $request->get('etat_id'), // Correction ici
-    ]);
-
-    // Associer les relations
-    $agent->domaine()->associate(Domaine::find($request->get('domaine_id')));
-    $agent->niveau()->associate(NiveauEtude::find($request->get('niveau_id'))); // Correction ici
-    $agent->etat()->associate(TypeEtat::find($request->get('etat_id'))); // Correction ici
-
-    $agent->save();
-
-    return redirect()->route('agents.index')->with('success', 'Agent créé avec succès!');
-}
+        Agent::create($request->all());
+        return redirect()->route('agents.index')->with('success', 'Agent ajouté avec succès.');
+    }
 
     /**
      * Display the specified resource.

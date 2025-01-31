@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Grade;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
-
+use App\Models\TypeGrade;
 class GradeController extends Controller
 {
     /**
@@ -11,7 +13,9 @@ class GradeController extends Controller
      */
     public function index()
     {
-        //
+        $types = TypeGrade::all();
+        $grades = Grade::all();
+        return view('grades.index', compact('grades', 'types'));
     }
 
     /**
@@ -27,7 +31,18 @@ class GradeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'nom_grade' => 'required|string|max:255',
+            'code_grade' => 'required|string|max:50|unique:grades,code_grade',
+            'type_grade_id' => 'required|exists:type_grades,id',
+        ]);
+        Grade::create([
+            'nom_grade' => $request->nom_grade,
+            'code_grade' => $request->code_grade,
+            'type_grade_id' => $request->type_grade_id,
+        ]);
+
+        return redirect()->route('grades.index')->with('success', 'Grade créé avec succès.');
     }
 
     /**
@@ -59,6 +74,8 @@ class GradeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $grade = Grade::findOrfail($id);
+        $grade->delete();
+        return redirect()->back()->with('success', 'Grade supprimé avec succès.');
     }
 }

@@ -23,8 +23,8 @@ return new class extends Migration
             $table->string('email', 255)->nullable();
             $table->date('date_engagement');
             $table->foreignId('domaine_id')->constrained('domaines')->onDelete('cascade');
-            $table->foreignId('niveau_id')->constrained('niveau_etudes')->onDelete('cascade');
-            $table->foreignId('etat_id')->constrained('type_etats')->onDelete('cascade');
+            $table->foreignId('niveau_etude_id')->constrained('niveau_etudes')->onDelete('cascade');
+            $table->foreignId('type_etat_id')->constrained('type_etats')->onDelete('cascade');
             $table->timestamps();
         });
     }
