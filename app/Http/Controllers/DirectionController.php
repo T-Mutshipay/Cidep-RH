@@ -53,9 +53,11 @@ class DirectionController extends Controller
         return redirect()->route('directions.index')->with('success', 'Direction mise à jour avec succès.');
     }
 
-    public function destroy(Direction $direction)
-    {
-        $direction->delete();
-        return redirect()->route('directions.index')->with('success', 'Direction supprimée avec succès.');
+    public function destroy($id){
+    $direction = Direction::findOrFail($id);
+    $direction->delete();
+
+    return redirect()->back()->with('success', 'Direction supprimée avec succès.');
     }
+
 }

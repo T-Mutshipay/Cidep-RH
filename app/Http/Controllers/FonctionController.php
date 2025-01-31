@@ -54,9 +54,10 @@ class FonctionController extends Controller
         return redirect()->route('fonctions.index')->with('success', 'Fonction mise à jour avec succès.');
     }
 
-    public function destroy(Fonction $fonction)
+    public function destroy( $id)
     {
+        $fonction = Fonction::findOrFail($id);
         $fonction->delete();
-        return redirect()->route('fonctions.index')->with('success', 'Fonction supprimée avec succès.');
+        return redirect()->back()->with('success', 'Fonction supprimée avec succès.');
     }
 }
