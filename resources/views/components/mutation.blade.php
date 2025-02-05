@@ -5,8 +5,8 @@
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
             <!-- Modal header -->
-            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white" id="modal_mutation_label">
+            <div class="flex items-center justify-between bg-gradient-to-r from-white via-yellow-400 to-blue-500 shadow-lg p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white " id="modal_mutation_label">
                     Enregistrer la mutation
                 </h3>
                 <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="modal_mutation" aria-label="Close">

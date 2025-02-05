@@ -27,16 +27,12 @@
 
 <script>
     function supprimer(event) {
-        event.preventDefault(); // Empêche le bouton d'exécuter son comportement par défaut
+        event.preventDefault(); 
     
-        let button = event.currentTarget; // Récupère le bouton qui a été cliqué
-        let message = button.getAttribute("data-message"); // Récupère le message
-        let url = button.getAttribute("data-url"); // Récupère l'URL de suppression
-    
-        // Modifier le texte du modal
+        let button = event.currentTarget; 
+        let message = button.getAttribute("data-message");
+        let url = button.getAttribute("data-url"); 
         document.getElementById("modal-message").textContent = message;
-    
-        // Modifier l'URL du formulaire pour la requête DELETE
         document.getElementById("delete-form").setAttribute("action", url);
     }
     </script>
