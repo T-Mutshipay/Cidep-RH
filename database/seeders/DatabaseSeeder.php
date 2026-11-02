@@ -25,6 +25,8 @@ class DatabaseSeeder extends Seeder
             NiveauSeeder::class,
             TypeEtatSeeder::class,
             TypeGradeSeeder::class,
+            GradeSeeder::class,
+            ServiceSeeder::class
         ]);
         Agent::factory(10)->create();
     }

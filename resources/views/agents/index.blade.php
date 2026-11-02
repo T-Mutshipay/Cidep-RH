@@ -1,12 +1,12 @@
 <x-app-layout>
     <div class="flex justify-end m-4">
-        <a href="{{ route('agents.index') }}" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition-all flex items-center">
+        <a href="{{ route('index') }}" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition-all flex items-center">
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
             </svg>
         </a>
     </div>
-    <div class="m-4">
+    <div class="m-2">
         @if(session('success'))
             <div id="alert-3" class="flex items-center p-4 mb-4 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -42,10 +42,8 @@
             </div>
         @endif
     </div>
-    <div class=" py-6 m-10">
-        <h1 class="text-2xl font-semibold mb-4">Liste des Agents</h1>
-        
-        <div id="form_agent" class="m-10 hidden">
+    <div class=" py-6 m-10">        
+        <div id="form_agent" class="hidden">
             <h1 class="text-2xl font-semibold">Créer un nouvel Agent</h1>
         
             <form action="{{ route('agents.store') }}" method="POST" class="space-y-6 mt-6">
@@ -161,59 +159,86 @@
                 <i class="fas fa-plus mr-2"></i>Créer un nouvel agent
             </button>
         </div>
+        <h1 class="text-2xl font-semibold mb-4 flex justify-center">Liste des Agents</h1>
+
+        <!-- Ajout du CSS DataTables -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                <th scope="col" class="px-6 py-3">Matricule</th>
-                <th scope="col" class="px-6 py-3">Nom</th>
-                <th scope="col" class="px-6 py-3">Postnom</th>
-                <th scope="col" class="px-6 py-3">Prénom</th>
-                <th scope="col" class="px-6 py-3">Niveau d'étude</th>
-                <th scope="col" class="px-6 py-3">Domaines</th>
-                <th scope="col" class="px-6 py-3">Date d'engagement</th>
-                <th scope="col" class="px-6 py-3">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($agents as $agent)
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                    <td class="px-6 py-4">{{ $agent->matricule }}</td>
-                    <td class="px-6 py-4">{{ $agent->nom }}</td>
-                    <td class="px-6 py-4">{{ $agent->postnom }}</td>
-                    <td class="px-6 py-4">{{ $agent->prenom }}</td>
-                    <td class="px-6 py-4">{{ $agent->niveau }}</td>
-                    <td class="px-6 py-4">{{ $agent->domaine->nom_domaine }}</td>
-                    <td class="px-6 py-4">{{ $agent->date_engagement }}</td>
-                    <td class="px-6 py-4 flex space-x-2">
-                    <a href="{{ route('agents.show', $agent->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                        <i class="fas fa-eye"></i>
-                    </a>
-                    <a href="{{ route('agents.show', $agent->id) }}" class="font-medium text-yellow-500 dark:text-yellow-400 hover:underline">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                        </svg>
-                    </a>
-                    <form action="{{ route('agents.destroy', $agent->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet agent ?');">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="font-medium text-red-600 dark:text-red-500 hover:underline">
-                        <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </form>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
+            <table id="agentsTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mt-2">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 bg-gray-300 dark:bg-gray-800">Matricule</th>
+                        <th scope="col" class="px-6 py-3">Nom</th>
+                        <th scope="col" class="px-6 py-3 bg-gray-300 dark:bg-gray-800">Postnom</th>
+                        <th scope="col" class="px-6 py-3">Prénom</th>
+                        <th scope="col" class="px-6 py-3 bg-gray-300 dark:bg-gray-800">Niveau d'étude</th>
+                        <th scope="col" class="px-6 py-3">Domaines</th>
+                        <th scope="col" class="px-6 py-3 bg-gray-300 dark:bg-gray-800">Date d'engagement</th>
+                        <th scope="col" class="px-6 py-3">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($agents as $agent)
+                    <tr class="bg-white border-b border-gray-500 dark:border-gray-700">
+                        <td class="px-6 py-4">{{ $agent->matricule }}</td>
+                        <td class="px-6 py-4">{{ $agent->nom }}</td>
+                        <td class="px-6 py-4">{{ $agent->postnom }}</td>
+                        <td class="px-6 py-4">{{ $agent->prenom }}</td>
+                        <td class="px-6 py-4">{{ $agent->niveau }}</td>
+                        <td class="px-6 py-4">{{ $agent->domaine->nom_domaine }}</td>
+                        <td class="px-6 py-4">{{ $agent->date_engagement }}</td>
+                        <td class="px-6 py-4 flex space-x-2">
+                            <a href="{{ route('agents.show', $agent->id) }}" class="font-medium text-yellow-500 dark:text-yellow-400 hover:underline">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <a href="{{ route('agents.destroy', $agent->id) }}"
+                                onclick="supprimer(event);"
+                                data-modal-target="popup-modal" 
+                                data-modal-toggle="popup-modal"
+                                data-message="vous allez supprimer l'agent {{$agent->nom}} {{$agent->postnom}} ?"
+                                class="font-medium text-red-600 dark:text-red-500 hover:underline">
+                                    <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
             </table>
         </div>
     </div>
-
+        <x-delete-component/>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+        
+        <script>
+            $(document).ready(function () {
+                $('#agentsTable').DataTable({
+                    "language": {
+                        "lengthMenu": "Afficher _MENU_ entrées",
+                        "zeroRecords": "Aucun agent trouvé",
+                        "info": "Affichage de _START_ à _END_ sur _TOTAL_ entrées",
+                        "infoEmpty": "Aucune entrée disponible",
+                        "infoFiltered": "(filtré à partir de _MAX_ entrées)",
+                        "search": "Rechercher :",
+                        "paginate": {
+                            "first": "Premier",
+                            "last": "Dernier",
+                            "next": "Suivant",
+                            "previous": "Précédent"
+                        }
+                    },
+                    "paging": true,
+                    "ordering": true,
+                    "info": true
+                });
+            });
+        </script>
     <script>
         document.getElementById('active').addEventListener('click', function () {
             const formContainer = document.getElementById('form_agent');
             formContainer.classList.toggle('hidden');
+            
         });
     </script>
 </x-app-layout>

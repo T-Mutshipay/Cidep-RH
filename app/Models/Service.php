@@ -13,4 +13,7 @@ class Service extends Model
         'code_service',
         'detail_service',
     ];
+    public function mutation() {
+        return $this->hasMany(Mutation::class);
+    }
 }

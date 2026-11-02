@@ -1,12 +1,12 @@
 @props(['agent', 'niveauxEtude'])
 
 <!-- Main modal -->
-<div id="default-modal" tabindex="-1" aria-hidden="true" class="overflow-y-auto overflow-x-hidden fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-gray-900 bg-opacity-50">
+<div id="default-modal" tabindex="-1" aria-hidden="true" class=" hidden overflow-y-auto overflow-x-hidden fixed inset-0 z-50 justify-center items-center w-full h-full bg-gray-900 bg-opacity-50">
     <div class="relative p-4 w-full max-w-2xl max-h-full">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
-            <div class="flex items-center justify-between p-4 border-b rounded-t dark:border-gray-600 border-gray-200">
+            <div class="bg-gradient-to-r from-white via-yellow-400 to-blue-500  flex items-center justify-between p-4 border-b rounded-t dark:border-gray-600 border-gray-200">
                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
                     Terms of Service
                 </h3>

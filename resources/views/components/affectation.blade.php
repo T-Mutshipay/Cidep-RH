@@ -6,7 +6,7 @@
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
             <!-- Modal header -->
-            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
+            <div class="bg-gradient-to-r from-white via-yellow-400 to-blue-500  flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white" id="modal_affectation_label">
                     Enregistrer l'affectation
                 </h3>
@@ -26,7 +26,7 @@
                         <label for="service_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Service</label>
                         <select id="service_id" name="service_id" class="form-select mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
                             @foreach ($services as $service)
-                                <option value="{{ $service->id }}">{{ $service->name }}</option>
+                                <option value="{{ $service->id }}">{{ $service->nom_service }}</option>
                             @endforeach
                         </select>
                     </div>
